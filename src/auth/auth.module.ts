@@ -3,9 +3,11 @@ import { AuthService } from './providers/auth.service';
 import { AuthController } from './auth.controller';
 import { PrismaService } from 'src/prisma.service';
 import { SignUpProvider } from './providers/signup.provider';
-import { SignInProvider } from './providers/signin.provider';
 import { CheckUserProvider } from './providers/checkUserExists.provider';
 import { HashingProvider } from './providers/hashing.provider';
+import { PassportModule } from '@nestjs/passport';
+import { LocalStrategy } from './stratiges/local';
+import { UserValidationProvider } from './providers/signin.provider';
 
 @Module({
   controllers: [AuthController],
@@ -13,11 +15,12 @@ import { HashingProvider } from './providers/hashing.provider';
     AuthService,
     PrismaService,
     SignUpProvider,
-    SignInProvider,
     CheckUserProvider,
     HashingProvider,
+    LocalStrategy,
+    UserValidationProvider,
   ],
-  imports: [],
+  imports: [PassportModule],
   exports: [AuthService],
 })
 export class AuthModule {}

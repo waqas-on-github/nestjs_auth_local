@@ -4,14 +4,14 @@ import { CheckUserProvider } from './checkUserExists.provider';
 import { HashingProvider } from './hashing.provider';
 
 @Injectable()
-export class SignInProvider {
+export class UserValidationProvider {
   constructor(
     private readonly checkUserProvider: CheckUserProvider,
     // inject hashing provider
     private readonly hashingProvider: HashingProvider,
   ) {}
 
-  public async singIn(signInDto: SignInDto) {
+  public async validateUser(signInDto: SignInDto) {
     try {
       // check user exits by email
       const user = await this.checkUserProvider.checkUserByEmail(
@@ -27,10 +27,12 @@ export class SignInProvider {
         user.password,
       );
 
-      // if password is worng throw execption
+      // if password is not correct throw exception
       if (!isPasswordCorrect) {
         throw new NotFoundException('invalid credentials');
       }
+      // if password is correct return user
+      return user;
     } catch (error) {
       throw error;
     }
